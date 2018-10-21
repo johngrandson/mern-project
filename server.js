@@ -2,16 +2,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const cors = require('./config/cors');
 
-const users = require('./routes/api/users');
-const profile = require('./routes/api/profile');
-const posts = require('./routes/api/posts');
+const routes = require('./routes/api');
 
 const app = express();
 
 // BodyParser middleware
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
+
+app.all("/*", cors);
 
 // DB Config
 const db = require('./config/keys').mongoURI;
@@ -29,9 +30,9 @@ app.use(passport.initialize());
 require('./config/passport')(passport);
 
 // Use Routes
-app.use('/api/users', users);
-app.use('/api/profile', profile);
-app.use('/api/posts', posts);
+app.use('/api/users', routes.users);
+app.use('/api/profile', routes.profile);
+app.use('/api/devices', routes.devices);
 
 const port = process.env.PORT || 5000;
 

@@ -7,7 +7,7 @@ const gravatar = require('gravatar');
 const validateRegisterInput = require('../validation/register');
 const validateLoginInput = require('../validation/login');
 
-module.exports.registerController = (req, res) => {
+module.exports.register = (req, res) => {
     try {
         const { errors, isValid } = validateRegisterInput(req.body);
 
@@ -31,6 +31,7 @@ module.exports.registerController = (req, res) => {
                         name: req.body.name,
                         email: req.body.email,
                         avatar,
+                        isAdmin: req.body.isAdmin,
                         password: req.body.password
                     });
 
@@ -51,7 +52,7 @@ module.exports.registerController = (req, res) => {
 
 }
 
-module.exports.loginController = (req, res) => {
+module.exports.login = (req, res) => {
     try {
         const { errors, isValid } = validateLoginInput(req.body)
 
@@ -100,12 +101,13 @@ module.exports.loginController = (req, res) => {
     }
 }
 
-module.exports.currentController = (req, res) => {
+module.exports.session = (req, res) => {
     try {
         res.json({
             id: req.user.id,
             name: req.user.name,
-            email: req.user.email
+            email: req.user.email,
+            isAdmin: req.user.isAdmin
         });
     } catch (error) {
         throw error;
