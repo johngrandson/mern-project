@@ -35,7 +35,7 @@ module.exports.listById = (req, res) => {
     try {
         const errors = {};
 
-        Device.findOne({ _id: req.body.id })
+        Device.findOne({ _id: req.params.id })
             .then(device => {
                 if (!device) {
                     errors.nodevices = 'Device with given id was not found';
@@ -66,8 +66,9 @@ module.exports.create = (req, res) => {
             owner: req.user.name
         });
 
-
-        console.log(req.user);
+        newDevice.save()
+            .then(device => res.json(device))
+            .catch(err => console.log(err));
 
     } catch (error) {
         throw error;
